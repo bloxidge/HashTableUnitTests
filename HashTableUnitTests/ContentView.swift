@@ -8,12 +8,53 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @StateObject var vm: ContentViewModel = ContentViewModel()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            HStack {
+                Text("Observer Count")
+                Button("Refresh",
+                       action: vm.refreshCount)
+            }
+            Text("\(vm.observerCount) observers")
+            Divider()
+            Text("testBasicAddAndRemove")
+            HStack {
+                Button("Add Observer", 
+                       action: vm.addObserver)
+                Button("Pop Observer",
+                       action: vm.popObserver)
+            }
+            
+            Divider()
+            Text("testRemoveObjectThatIsNotIn")
+            HStack {
+                Button("Remove New Observer",
+                       action: vm.removeNewObserver)
+            }
+            
+            Divider()
+            Text("testRemoveCalledDuringDeinit")
+            HStack {
+                Button("Remove New Observer",
+                       action: vm.removeDuringDeinit)
+            }
+            
+            Divider()
+            Text("testRemoveTwiceOnDifferentThreads")
+            HStack {
+                Button("Remove On Multiple Threads",
+                       action: vm.removeMultipleThreads)
+            }
+            
+            Divider()
+            Text("testRemoveManyTimesOnDifferentThreads")
+            HStack {
+                Button("Remove On MANY Threads",
+                       action: vm.removeManyThreads)
+            }
         }
         .padding()
     }

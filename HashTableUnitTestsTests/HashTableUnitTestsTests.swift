@@ -9,28 +9,123 @@ import XCTest
 @testable import HashTableUnitTests
 
 final class HashTableUnitTestsTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    
+    func testBasicAddAndRemove() throws {
+        let sut = DefaultDownloadsManager()
+        
+        let stubObserver = StubDownloadsEditorObserver()
+        
+        sut.add(observer: stubObserver)
+        
+        sut.notifyObservers()
+        XCTAssertEqual(sut.observers.count, 1)
+        
+        sut.remove(observer: stubObserver)
+        
+        XCTAssertEqual(sut.observers.count, 0)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testRemoveObjectThatIsNotIn() throws {
+        let sut = DefaultDownloadsManager()
+        
+        let stubObserver = StubDownloadsEditorObserver()
+        let stubObserver2 = StubDownloadsEditorObserver()
+        
+        sut.add(observer: stubObserver)
+        
+        sut.notifyObservers()
+        XCTAssertEqual(sut.observers.count, 1)
+        
+        sut.remove(observer: stubObserver2)
+        
+        XCTAssertEqual(sut.observers.count, 1)
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testRemoveObjectFromEmpty() throws {
+        let sut = DefaultDownloadsManager()
+        
+        let stubObserver = StubDownloadsEditorObserver()
+        
+        sut.notifyObservers()
+        XCTAssertEqual(sut.observers.count, 0)
+        
+        sut.remove(observer: stubObserver)
+        sut.remove(observer: stubObserver)
+        
+        XCTAssertEqual(sut.observers.count, 0)
     }
+    
+    func testRemoveCalledDuringDeinit() async throws {
+        let sut = DefaultDownloadsManager()
+        
+        var stubObserver: RemovingDownloadsEditorObserver? = RemovingDownloadsEditorObserver()
+        stubObserver?.observable = sut
+        sut.add(observer: stubObserver!)
+        sut.notifyObservers()
+        XCTAssertEqual(sut.observers.count, 1)
+        
+        stubObserver = nil
+        
+        print("DANE - Count \(sut.observers.count)")
+        try await Task.sleep(nanoseconds: 100_000)
+//        print("DANE - Count \(sut.observers.count)")
+        XCTAssertEqual(sut.observers.count, 0)
+    }
+    
+    func testRemoveCalledDuringDeinitAssertNil() async throws {
+        let sut = DefaultDownloadsManager()
+        
+        var stubObserver: RemovingDownloadsEditorObserver? = RemovingDownloadsEditorObserver()
+        stubObserver?.observable = sut
+        sut.add(observer: stubObserver!)
+        sut.notifyObservers()
+        XCTAssertEqual(sut.observers.count, 1)
+        
+        stubObserver = nil
+        
+        print("DANE - Count \(sut.observers.count)")
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        XCTAssertNil(stubObserver)
+    }
+    
+    //    func testRemoveAlreadyWeakObserver() throws {
+    //        let sut = DefaultDownloadsManager()
+    //
+    //        var stubObserver: StubDownloadsEditorObserver? = StubDownloadsEditorObserver()
+    //
+    //        sut.add(observer: stubObserver!)
+    //
+    //        sut.notifyObservers()
+    //        XCTAssertEqual(sut.observers.count, 1)
+    //
+    //        sut.remove(observer: stubObserver)
+    //
+    //        XCTAssertEqual(sut.observers.count, 0)
+    //    }
+    
+}
+
+class StubDownloadsEditorObserver: DownloadsEditorObserver {
+    func foo() {
+        print("DANE - foo called")
+    }
+}
+
+
+class RemovingDownloadsEditorObserver: DownloadsEditorObserver {
+    
+    var observable: DownloadsEditor?
+    
+    deinit {
+        if let observable {
+            print("DANE - Deinit - Removing Self")
+            observable.remove(observer: self)
+        } else {
+            print("DANE - Deinit - No Observable")
         }
     }
-
+    
+    func foo() {
+        print("DANE - foo called")
+    }
 }
