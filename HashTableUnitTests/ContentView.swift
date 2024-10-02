@@ -55,6 +55,22 @@ struct ContentView: View {
                 Button("Remove On MANY Threads",
                        action: vm.removeManyThreads)
             }
+            
+            Divider()
+            Text("testFix????")
+            HStack {
+                Button("Remove On MANY Threads via MainActor",
+                       action: vm.mainActorRemoveManyThreads
+)
+            }
+            
+            Divider()
+            Text("testFix????")
+            HStack {
+                Button("Remove On MANY Threads via MainActor Deinit",
+                       action: vm.mainActorRemoveManyThreadsDeinit
+)
+            }
         }
         .padding()
     }

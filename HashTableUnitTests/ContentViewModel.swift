@@ -94,4 +94,43 @@ class ContentViewModel: ObservableObject {
         }
     }
     
+    func mainActorRemoveManyThreads() {
+        let iterations = 10
+        var observers: [DefaultDownloadsEditorObserver] = []
+        
+        for _ in 0...iterations {
+            let observer = DefaultDownloadsEditorObserver()
+            Task {
+                await self.dm.addSafe(observer: observer)
+            }
+            observers.append(observer)
+        }
+        
+        DispatchQueue.concurrentPerform(iterations: 10) { i in
+
+            let obs = observers[i]
+            Task {
+                await self.dm.removeSafe(observer: obs)
+            }
+        }
+    }
+    
+    func mainActorRemoveManyThreadsDeinit() {
+        let iterations = 10
+        var observers: [DefaultSafeRemovingDownloadsEditorObserver] = []
+        
+        for _ in 0...iterations {
+            let observer = DefaultSafeRemovingDownloadsEditorObserver()
+            Task {
+                await self.dm.addSafe(observer: observer)
+            }
+            observers.append(observer)
+        }
+        
+        DispatchQueue.concurrentPerform(iterations: 10) { i in
+            _ = observers.popLast()
+        }
+        refreshCount()
+    }
+    
 }

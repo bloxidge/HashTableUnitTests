@@ -14,6 +14,7 @@ import Foundation
 protocol DownloadsEditor {
     func add(observer: any DownloadsEditorObserver)
     func remove(observer: any DownloadsEditorObserver)
+    func removeSafe(observer: any DownloadsEditorObserver) async
 }
 
 class DefaultDownloadsManager: DownloadsEditor {
@@ -29,13 +30,22 @@ class DefaultDownloadsManager: DownloadsEditor {
             return listener as? DownloadsEditorObserver
         })
     }
-    
-    
+
     func add(observer: any DownloadsEditorObserver) {
         observers.add(observer)
     }
     
     func remove(observer: any DownloadsEditorObserver) {
+        observers.remove(observer)
+    }
+    
+    @MainActor
+    func addSafe(observer: any DownloadsEditorObserver) {
+        observers.add(observer)
+    }
+    
+    @MainActor
+    func removeSafe(observer: any DownloadsEditorObserver) {
         observers.remove(observer)
     }
     
@@ -62,6 +72,21 @@ class DefaultRemovingDownloadsEditorObserver: DownloadsEditorObserver {
             observable.remove(observer: self)
         } else {
             print("DANE - Deinit - No Observable")
+        }
+    }
+    
+    func foo() {
+        print("DANE - foo called")
+    }
+}
+
+class DefaultSafeRemovingDownloadsEditorObserver: DownloadsEditorObserver {
+    
+    var observable: DownloadsEditor?
+    
+    deinit {
+        Task {
+            await observable?.removeSafe(observer: self)
         }
     }
     
