@@ -73,20 +73,18 @@ class ContentViewModel: ObservableObject {
     }
     
     func removeManyThreads() {
-
         let iterations = 10
         var observers: [DefaultDownloadsEditorObserver] = []
         
-        for i in 0...iterations {
+        for _ in 0...iterations {
             let observer = DefaultDownloadsEditorObserver()
             self.dm.add(observer: observer)
             observers.append(observer)
         }
         
         DispatchQueue.concurrentPerform(iterations: 10) { i in
-//            print("Performing \(i) from \(Thread.current)")
-//            print("Performing \(i)")
-            
+            print("Removing \(i) from \(Thread.current)")
+
 //            let observer = DefaultDownloadsEditorObserver()
 //            self.dm.add(observer: observer)
             
@@ -107,9 +105,9 @@ class ContentViewModel: ObservableObject {
         }
         
         DispatchQueue.concurrentPerform(iterations: 10) { i in
-
             let obs = observers[i]
             Task {
+                print("Removing \(i) from \(Thread.current)")
                 await self.dm.removeSafe(observer: obs)
             }
         }

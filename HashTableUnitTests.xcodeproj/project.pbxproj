@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		134569F12CF61C4D00AD7EA8 /* ThreadSafeWeakCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134569F02CF61C4D00AD7EA8 /* ThreadSafeWeakCollection.swift */; };
 		DD4E0C4D2CA596A5003A0445 /* HashTableUnitTestsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4E0C4C2CA596A5003A0445 /* HashTableUnitTestsApp.swift */; };
 		DD4E0C4F2CA596A5003A0445 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4E0C4E2CA596A5003A0445 /* ContentView.swift */; };
 		DD4E0C512CA596A7003A0445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD4E0C502CA596A7003A0445 /* Assets.xcassets */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		134569F02CF61C4D00AD7EA8 /* ThreadSafeWeakCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeWeakCollection.swift; sourceTree = "<group>"; };
 		DD4E0C492CA596A5003A0445 /* HashTableUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HashTableUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD4E0C4C2CA596A5003A0445 /* HashTableUnitTestsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTableUnitTestsApp.swift; sourceTree = "<group>"; };
 		DD4E0C4E2CA596A5003A0445 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				DD8E7C492CAA9F7D009BEC17 /* ContentViewModel.swift */,
 				DD4E0C762CA596B8003A0445 /* DefaultDownloadsManager.swift */,
 				DD4E0C4C2CA596A5003A0445 /* HashTableUnitTestsApp.swift */,
+				134569F02CF61C4D00AD7EA8 /* ThreadSafeWeakCollection.swift */,
 				DD4E0C522CA596A7003A0445 /* Preview Content */,
 			);
 			path = HashTableUnitTests;
@@ -265,6 +268,7 @@
 			files = (
 				DD8E7C4A2CAA9F7D009BEC17 /* ContentViewModel.swift in Sources */,
 				DD4E0C772CA596B8003A0445 /* DefaultDownloadsManager.swift in Sources */,
+				134569F12CF61C4D00AD7EA8 /* ThreadSafeWeakCollection.swift in Sources */,
 				DD4E0C4F2CA596A5003A0445 /* ContentView.swift in Sources */,
 				DD4E0C4D2CA596A5003A0445 /* HashTableUnitTestsApp.swift in Sources */,
 			);

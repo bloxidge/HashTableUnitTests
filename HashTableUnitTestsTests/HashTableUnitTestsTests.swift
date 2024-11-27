@@ -88,20 +88,20 @@ final class HashTableUnitTestsTests: XCTestCase {
         XCTAssertNil(stubObserver)
     }
     
-    //    func testRemoveAlreadyWeakObserver() throws {
-    //        let sut = DefaultDownloadsManager()
-    //
-    //        var stubObserver: StubDownloadsEditorObserver? = StubDownloadsEditorObserver()
-    //
-    //        sut.add(observer: stubObserver!)
-    //
-    //        sut.notifyObservers()
-    //        XCTAssertEqual(sut.observers.count, 1)
-    //
-    //        sut.remove(observer: stubObserver)
-    //
-    //        XCTAssertEqual(sut.observers.count, 0)
-    //    }
+    func testRemoveAlreadyWeakObserver() throws {
+        let sut = DefaultDownloadsManager()
+
+        var stubObserver: StubDownloadsEditorObserver? = StubDownloadsEditorObserver()
+
+        sut.add(observer: stubObserver!)
+
+        sut.notifyObservers()
+        XCTAssertEqual(sut.observers.count, 1)
+
+        sut.remove(observer: stubObserver!)
+
+        XCTAssertEqual(sut.observers.count, 0)
+    }
     
 }
 

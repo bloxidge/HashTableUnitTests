@@ -19,11 +19,11 @@ protocol DownloadsEditor {
 
 class DefaultDownloadsManager: DownloadsEditor {
     
-    var observers = NSHashTable<AnyObject>.weakObjects()
+    var observers = ThreadSafeWeakCollection<any DownloadsEditorObserver>()
 
-    var typedListeners: [DownloadsEditorObserver] {
-        typedListeners(for: observers)
-    }
+//    var typedListeners: [DownloadsEditorObserver] {
+//        typedListeners(for: observers)
+//    }
     
     private func typedListeners(for hashTable: NSHashTable<AnyObject>) -> [DownloadsEditorObserver] {
         return hashTable.objectEnumerator().compactMap({ (listener) -> DownloadsEditorObserver? in
@@ -50,7 +50,7 @@ class DefaultDownloadsManager: DownloadsEditor {
     }
     
     func notifyObservers() {
-        typedListeners.forEach { $0.foo() }
+        observers.allObjects.forEach { $0.foo() }
     }
 }
 
